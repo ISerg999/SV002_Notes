@@ -22,7 +22,13 @@ public class SharedResources {
   private String topicNull = "<Без темы>";
 
   private String urlInfoUser = "infoUser";
+  private String urlUsrForm = "userForm";
+  private String urlError = "msgError";
   private String urlRedirectToMain = "redirect:/";
+  private String msgErrorPasswordDoNotMatch = "Пароли не совпадают.";
+  private String msgErrorPasswordShortLength = "Короткая длина пароля.";
+  private String msgErrorUser = "Пользователь с таким именем уже существует.";
+  private String msgErrorUserShortLength = "Короткая длина имени пользователя.";
 
   @Autowired
   private RolesRepository rolesRep;
