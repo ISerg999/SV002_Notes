@@ -7,7 +7,6 @@ import ru.siv.notes.repository.NotesRepository;
 import ru.siv.notes.repository.RolesRepository;
 import ru.siv.notes.repository.TopicsRepository;
 import ru.siv.notes.repository.UsersRepository;
-import ru.siv.notes.service.UserService;
 
 /**
  * Класс содержащий общедоступные ресурсы.
@@ -19,7 +18,8 @@ public class SharedResources {
   private String roleUser = "USER";
   private String roleAdmin = "ADMIN";
   private String anonymousUser = "anonymousUser";
-  private String fullNameGuest = "";
+  private String fullNameGuest = "Гость";
+  private String topicNull = "<Без темы>";
 
   private String urlInfoUser = "infoUser";
   private String urlRedirectToMain = "redirect:/";
