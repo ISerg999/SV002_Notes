@@ -11,6 +11,7 @@ import ru.siv.notes.model.Roles;
 import ru.siv.notes.model.Status;
 import ru.siv.notes.model.Users;
 
+
 import java.util.List;
 
 @Service
@@ -120,7 +121,41 @@ public class UserService {
     String userName = authentication.getName();
     if (res.getAnonymousUser().equals(userName)) return new InfoUser();
     Users user = getUserByUsername(userName, false);
-    return new InfoUser(user);
+    InfoUser infoUser = new InfoUser();
+    return infoUser.setUser(user);
   }
 
+  public class InfoUser {
+
+    private Users user;
+    private String userName;
+    private int typeRoleUser;
+
+    public InfoUser() {
+      user = null;
+      userName = res.getFullNameGuest();
+      typeRoleUser = -1;
+    }
+
+    public InfoUser setUser(Users user) {
+      if (null != user) {
+        this.user = user;
+        this.userName = user.getFullName();
+        typeRoleUser = res.getRoleUser().equals(user.getRole().getAuthority()) ? 0: 1;
+      }
+      return this;
+    }
+
+    public Users getUser() {
+      return user;
+    }
+
+    public String getUserName() {
+      return userName;
+    }
+
+    public int getTypeRoleUser() {
+      return typeRoleUser;
+    }
+  }
 }
