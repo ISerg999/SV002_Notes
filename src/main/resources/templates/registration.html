@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="blocks/header :: common_header(~{::title})">
+    <title>Статьи. Регистрация.</title>
+</head>
+<body>
+<div class="container py-3">
+    <div th:insert="blocks/header :: headline"></div>
+
+    <main>
+        <form method="post" class="row g-3">
+            <h2>Регистрация</h2>
+            <div th:if="${not #strings.isEmpty(msgError)}" class="alert alert-danger col-12" role="alert">
+                <span th:text="${msgError}"></span>
+            </div>
+            <div class="col-12">
+                <label for="inputUserName" class="form-label">Логин</label>
+                <input type="text" name="username" placeholder="Логин" class="form-control" autofocus="true" id="inputUserName" th:field="*{userForm.username}">
+            </div>
+            <div class="col-12">
+                <label for="inputPassword" class="form-label">Пароль</label>
+                <input type="password" name="password" placeholder="Пароль" class="form-control" id="inputPassword" th:field="*{userForm.password}">
+            </div>
+            <div class="col-12">
+                <label for="inputPassConfirm" class="form-label">Повторный пароль</label>
+                <input type="password" name="passwordConfirm" placeholder="Повторный ввод пароля" class="form-control" id="inputPassConfirm" th:field="*{userForm.passwordConfirm}">
+            </div>
+            <div class="col-12">
+                <label for="inputFullName" class="form-label">Полное имя</label>
+                <input type="text" name="fullName" placeholder="Полное имя" class="form-control" id="inputFullName" th:field="*{userForm.fullName}">
+            </div>
+            <div  class="col-12">
+                <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+            </div>
+        </form>
+    </main>
+
+    <div th:insert="blocks/footer :: footer"></div>
+</div>
+</body>
+</html>

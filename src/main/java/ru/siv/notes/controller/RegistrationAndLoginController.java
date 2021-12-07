@@ -51,6 +51,10 @@ public class RegistrationAndLoginController {
       model.addAttribute(res.getUrlError(), msgError);
       return "registration";
     }
+    if (userForm.getFullName().length() < 2) {
+      model.addAttribute(res.getUrlError(), res.getMsgErrorFullUserShortLength());
+      return "registration";
+    }
     if (userForm.getUsername().length() < 2 || !userService.addUser(userForm, 1)) {
       if (userForm.getUsername().length() < 2) msgError = res.getMsgErrorUserShortLength();
       else msgError = res.getMsgErrorUser();

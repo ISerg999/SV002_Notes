@@ -32,7 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 ////        .antMatchers("/admin/**").hasRole("ADMIN") // Доступ только для пользователей с ролью Администратор
 //        .antMatchers("/", "/h2-console").permitAll() // Доступ разрешен всем пользователей
 //        .anyRequest().authenticated() // Все остальные страницы требуют аутентификации
-        .and().formLogin() //.loginPage("/login") // Настройка для входа в систему
+        .and().formLogin().loginPage("/login") // Настройка для входа в систему
         .defaultSuccessUrl("/") // Перенаправление на главную страницу после успешного входа
         .permitAll()
         .and().logout().permitAll().logoutSuccessUrl("/");

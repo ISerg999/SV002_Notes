@@ -29,6 +29,7 @@ public class SharedResources {
   private String msgErrorPasswordShortLength = "Короткая длина пароля.";
   private String msgErrorUser = "Пользователь с таким именем уже существует.";
   private String msgErrorUserShortLength = "Короткая длина имени пользователя.";
+  private String msgErrorFullUserShortLength = "Короткая длина полного имени пользователя.";
 
   @Autowired
   private RolesRepository rolesRep;
