@@ -8,19 +8,17 @@
     <div th:insert="blocks/header :: headline"></div>
 
     <main>
-        <form method="post" th:action="@{/login}">
+        <form method="post" class="row g-3" th:action="@{/login}">
             <h2>Вход в систему</h2>
-            <div>
-                <label>Имя пользователя: </label>
-                <input name="username" type="text" placeholder="Пользователь" autofocus="true" class="form-control">
-                <br>
+            <div class="col-12">
+                <label for="inputUsername" class="form-label">Имя пользователя</label>
+                <input type="text" name="username" placeholder="Пользователь" class="form-control" autofocus="true" id="inputUsername">
             </div>
-            <div>
-                <label>Пароль: </label>
-                <input name="password" type="password" placeholder="Пароль" class="form-control">
-                <br>
+            <div class="col-12">
+                <label for="inputPassword" class="form-label">Пароль</label>
+                <input type="password" name="password" placeholder="Пароль" class="form-control" id="inputPassword">
             </div>
-            <div>
+            <div class="col-12">
                 <button type="submit" class="btn btn-primary">Войти</button>
             </div>
         </form>
