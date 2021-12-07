@@ -24,7 +24,11 @@ public class SharedResources {
   private String urlInfoUser = "infoUser";
   private String urlUsrForm = "userForm";
   private String urlError = "msgError";
+  private String urlAllUser = "allUsers";
+
   private String urlRedirectToMain = "redirect:/";
+  private String urlRedirectToListUser = "redirect:/admin/user/list";
+
   private String msgErrorPasswordDoNotMatch = "Пароли не совпадают.";
   private String msgErrorPasswordShortLength = "Короткая длина пароля.";
   private String msgErrorUser = "Пользователь с таким именем уже существует.";
