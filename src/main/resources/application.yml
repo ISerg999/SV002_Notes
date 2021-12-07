@@ -1,11 +1,10 @@
 server:
   port: 3000
 
-# H2Datatbase настройки.
+# H2Datatbase настройки. url: jdbc:h2:mem:notes_db
 spirng:
   datasource:
     driverClassName: org.h2.Driver
-#    url: jdbc:h2:mem:notes_db
     url: jdbc:h2:file:~/db/notes.db
     username: sa
     password:
