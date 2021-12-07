@@ -1,2 +1,27 @@
 server:
   port: 3000
+
+# H2Datatbase настройки.
+spirng:
+  datasource:
+    driverClassName: org.h2.Driver
+#    url: jdbc:h2:mem:notes_db
+    url: jdbc:h2:file:~/db/notes.db
+    username: sa
+    password:
+# JPA настройки.
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
+# Включение H2 консоли.
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        trace: false
+        web-allow-others: false
+
+
