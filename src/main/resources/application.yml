@@ -23,5 +23,3 @@ spirng:
       settings:
         trace: false
         web-allow-others: false
-
-
