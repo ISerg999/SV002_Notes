@@ -26,7 +26,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
     http
         .csrf().disable()
-        .authorizeRequests()
+        .headers().frameOptions().sameOrigin() // Для h2-console
+        .and().authorizeRequests()
 //        .antMatchers("/registration", "/login").not().fullyAuthenticated() // Доступ только для не зарегистрированных пользователей
 ////        .antMatchers("/admin/**").hasRole("ADMIN") // Доступ только для пользователей с ролью Администратор
 //        .antMatchers("/", "/h2-console").permitAll() // Доступ разрешен всем пользователей
