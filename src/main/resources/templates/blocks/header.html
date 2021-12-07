@@ -13,11 +13,11 @@
     </div>
 
     <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
-        <div class="me-3 py-2 text-dark"><a class="text-decoration-none" th:href="@{/}">Главная</a> |</div>
+        <div class="me-3 py-2 text-dark"><a class="text-decoration-none" th:href="@{/}">Главная</a></div>
         <th:block th:if="${infoUser.typeRoleUser==0}">
-            <div class="me-3 py-2 text-dark"><a class="text-decoration-none" th:href="@{/admin/users}">Пользователи</a> |</div>
+            <div class="me-3 py-2 text-dark"><div class="vr"></div> <a class="text-decoration-none" th:href="@{/admin/users}">Пользователи</a></div>
         </th:block>
-<!--        <div class="me-3 py-2 text-dark"><a class="text-decoration-none" th:href="@{/article/all}">Статьи</a> |</div>-->
+        <!--        <div class="me-3 py-2 text-dark"><div class="vr"></div> <a class="text-decoration-none" th:href="@{/article/all}">Статьи</a></div>-->
     </nav>
 </div>
 
