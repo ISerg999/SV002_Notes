@@ -30,6 +30,11 @@ public class TopicService {
     return name;
   }
 
+  public Topics getTopicForId(Long id) {
+    Topics topic = res.getTopicsRep().findById(id).orElse(null);
+    log.info("IN TopicService.getTopicForId - id = {}, topic = {}", id, topic);
+    return topic;
+  }
   /**
    * Поиск ключа по названию темы.
    * @param name название темы

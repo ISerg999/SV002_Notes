@@ -12,7 +12,6 @@ import ru.siv.notes.model.Status;
 import ru.siv.notes.model.Users;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -36,7 +35,7 @@ public class UserService {
   public Users getUserById(Long id, Status status, boolean isStat) {
     Users user = res.getUsersRep().findById(id).orElse(null);
     user = testUserStatus(user, status, isStat);
-    if (null != user) log.info("IN UserService.getUserById - id = {}, user = {}, new id = {}", id, user, user.getId());
+    if (null != user) log.info("IN UserService.getUserById - id = {}, user = {}", id, user);
     else log.info("IN UserService.getUserById - user not found, id = {}", id);
     return user;
   }
@@ -62,7 +61,7 @@ public class UserService {
    * @return список пользователей
    */
   public List<Users> getAllUser(Status status, boolean isStat) {
-    List<Users> users = new ArrayList<>();
+    List<Users> users;
     if (null == status) users = res.getUsersRep().queryAllUserOredrByName();
     else {
       if (isStat) users = res.getUsersRep().queryUserAllForStatusOrderByName(status);
