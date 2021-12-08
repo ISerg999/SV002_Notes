@@ -12,4 +12,5 @@ public class NotesService {
   @Autowired
   private SharedResources res;
 
+  // TODO: Методы для работы со статьями.
 }

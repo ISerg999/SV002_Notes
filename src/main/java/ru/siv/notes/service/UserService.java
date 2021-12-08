@@ -141,7 +141,7 @@ public class UserService {
       if (null != user) {
         this.user = user;
         this.userName = user.getFullName();
-        typeRoleUser = res.getRoleUser().equals(user.getRole().getAuthority()) ? 0: 1;
+        typeRoleUser = res.getRoleAdmin().equals(user.getRole().getAuthority()) ? 0: 1;
       }
       return this;
     }

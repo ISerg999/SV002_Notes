@@ -1,0 +1,76 @@
+В application.properties
+
+# Указать местоположение статического каталога относительно корневой папки /src
+spring.resources.static-locations=classpath:/files/,classpath:/static-files
+
+# Указать местоположение статического каталога на локальном диске.
+spring.resources.static-locations=file:/opt/files
+
+Также можно в классе конфигурации MVC:
+
+@Override
+public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    registry
+      .addResourceHandler("/resources/**")
+      .addResourceLocations("/resources/");
+}
+
+Во-первых, мы настраиваем внешний путь URI, добавляя определение обработчика ресурсов.
+Затем мы сопоставляем этот внешний URI-путь внутренне с физическим путем, где на самом деле находятся ресурсы.
+
+Обслуживание ресурса, хранящегося в Файловой системе:
+
+@Override
+public void addResourceHandlers(ResourceHandlerRegistry registry) {
+  registry
+    .addResourceHandler("/files/**")
+    .addResourceLocations("file:/opt/files/");
+}
+Для пользователей Windows второе значение будет: "file:///C:/opt/files/"
+
+Настройка нескольких местоположений для ресурса:
+
+Override
+public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    registry
+      .addResourceHandler("/resources/**")
+      .addResourceLocations("/resources/","classpath:/other-resources/");
+}
+
+Ещё пример:
+
+@Override
+public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    registry
+      .addResourceHandler("/resources/**")
+      .addResourceLocations("/resources/","/other-resources/")
+      .setCachePeriod(3600)
+      .resourceChain(true)
+      .addResolver(new PathResourceResolver());
+}
+
+* Мы регистрируем PathResourceResolver в цепочке ресурсов в качестве единственного ResourceResolver в ней.
+* Обслуживаемые ресурсы будут кэшироваться в браузере в течение 3600 секунд.
+* Цепочка окончательно настраивается с помощью метода resource Chain(true).
+Теперь – HTML-код, который в сочетании с PathResourceResolver находит foo.js скрипт в папке webapp/resources или папки webapp/other-resources.
+
+Ресурсы можно кодировать:
+registry
+  .addResourceHandler("/other-files/**")
+  .addResourceLocations("file:/Users/Me/")
+  .setCachePeriod(3600)
+  .resourceChain(true)
+  .addResolver(new EncodedResourceResolver());
+
+По умолчанию Encoded ResourceResolver настроен на поддержку br и gzip кодирования.
+
+Ещё пример:
+
+egistry
+      .addResourceHandler("/js/**")
+      .addResourceLocations("/js/")
+      .setCachePeriod(3600)
+      .resourceChain(true)
+      .addResolver(new GzipResourceResolver())
+      .addResolver(new PathResourceResolver());
+

@@ -16,5 +16,5 @@ public class ProfileController {
   @Autowired
   private UserService userService;
 
-  // TODO: Возможность для любого пользователя изменить свое полное имя.
+  // TODO: Возможность для любого пользователя изменить свое полное имя и пароль.
 }

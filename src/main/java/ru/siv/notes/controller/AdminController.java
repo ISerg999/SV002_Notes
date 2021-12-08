@@ -19,13 +19,15 @@ public class AdminController {
   @Autowired
   private UserService userService;
 
-  @GetMapping("/admin/user/list")
+  // Просмотр списка и деактивация действующих пользователей.
+
+  @GetMapping("admin/user/list/enable")
   public String userList(Model model) {
     UserService.InfoUser infoUser = userService.getCurrentUser();
     if (0 != infoUser.getTypeRoleUser()) return res.getUrlRedirectToMain();
     model.addAttribute(res.getUrlInfoUser(), infoUser);
     model.addAttribute(res.getUrlAllUser(), userService.getAllUser(false));
-    return "admins/user-list";
+    return "admins/user-list-enable";
   }
 
   @GetMapping("/admin/user/{uId}/remove")
@@ -33,7 +35,7 @@ public class AdminController {
     UserService.InfoUser infoUser = userService.getCurrentUser();
     if (0 != infoUser.getTypeRoleUser()) return res.getUrlRedirectToMain();
     if (uId > 0) userService.deleteUser(uId);
-    return res.getUrlRedirectToListUser();
+    return res.getUrlRedirectToListUserEnable();
   }
 
   // TODO: Список удалённых пользователей.
