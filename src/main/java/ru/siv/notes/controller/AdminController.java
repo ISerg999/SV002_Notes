@@ -23,7 +23,7 @@ public class AdminController {
   // Просмотр списка и деактивация действующих пользователей.
 
   @GetMapping("admin/user/list/enable")
-  public String userList(Model model) {
+  public String userListEnable(Model model) {
     UserService.InfoUser infoUser = userService.getCurrentUser();
     if (0 != infoUser.getTypeRoleUser()) return res.getUrlRedirectToMain();
     model.addAttribute(res.getUrlInfoUser(), infoUser);
@@ -39,12 +39,34 @@ public class AdminController {
     return res.getUrlRedirectToListUserEnable();
   }
 
-  // TODO: Список удалённых пользователей.
-  // TODO: Восстановление удалённых пользователей.
+  // Просмотр списка "удалённых" пользователей и их активация.
+
+  @GetMapping("admin/user/list/disable")
+  public String userListDeleted(Model model) {
+    UserService.InfoUser infoUser = userService.getCurrentUser();
+    if (0 != infoUser.getTypeRoleUser()) return res.getUrlRedirectToMain();
+    model.addAttribute(res.getUrlInfoUser(), infoUser);
+    model.addAttribute(res.getUrlAllUser(), userService.getAllUser(Status.DELETED, true));
+    return "admins/user-list-disable";
+  }
+
+  @GetMapping("/admin/user/{uId}/activated")
+  public String activatedUser(@PathVariable(value = "uId") long uId, Model model) {
+    UserService.InfoUser infoUser = userService.getCurrentUser();
+    if (0 != infoUser.getTypeRoleUser()) return res.getUrlRedirectToMain();
+    userService.activatedUser(uId);
+    return res.getUrlRedirectToListUserDisable();
+  }
+
+  // Темы. Просмотр, добавление, редактирование, удаление.
+
   // TODO: Список тем.
   // TODO: Добавить тему.
   // TODO: Редактировать тему.
   // TODO: Удалить тему.
+
+  // Удалённые статьи, если автор не удалён. Просмотр списка статей, просмотр статьи, восстановление статьи.
+
   // TODO: Список удалённых статей (если не удалён автор).
   // TODO: Просмотр удалённой статьи (если не удалён автор).
   // TODO: Восстановление удалённой статьи (если не удалён автор).

@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="blocks/header :: common_header(~{::title})">
+  <title>Статьи. Админка. Пользователи удалённые.</title>
+</head>
+<body>
+<div class="container py-3">
+  <div th:insert="blocks/header :: headline"></div>
+
+  <main>
+    <h1>Удалённые пользователи</h1>
+    <table class="table table-bordered table-striped">
+      <thead class="thead-dark">
+      <th>ID</th>
+      <th>Пользователь</th>
+      <th>Роль</th>
+      <th>Восстановить</th>
+      </thead>
+      <tr th:each="el : ${allUsers}">
+        <td th:text="${el.id}"></td>
+        <td th:text="${el.username}"></td>
+        <td th:text="${el.role.name}"></td>
+        <td><a th:href="@{/admin/user/{uId}/activated(uId=${el.id})}" class="btn btn-danger">Восстановить</a></td>
+      </tr>
+    </table>
+  </main>
+
+  <div th:insert="blocks/footer :: footer"></div>
+</div>
+</body>
+</html>
