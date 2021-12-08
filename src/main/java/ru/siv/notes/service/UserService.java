@@ -139,7 +139,6 @@ public class UserService {
         log.info("IN UserService.deleteUser - It is impossible to execute, username = {}, role = {}", user.getUsername(), res.getRoleAdmin());
         return false;
       } else {
-        // TODO: Деактивируем все статьи данного пользователя.
         user.setStatus(Status.DELETED);
         res.getUsersRep().save(user);
         log.info("IN UserService.deleteUser - user with id: {} successfully deleted", user.getUsername());
@@ -158,7 +157,6 @@ public class UserService {
   public boolean activatedUser(Long id) {
     Users user = getUserById(id, Status.DELETED, true);
     if (null != user) {
-      // TODO: Активируем все статьи данного пользователя.
       user.setStatus(Status.ACTIVE);
       res.getUsersRep().save(user);
       log.info("IN UserService.activatedUser - user with id: {} successfully activate", user.getUsername());

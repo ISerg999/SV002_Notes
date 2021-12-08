@@ -40,7 +40,10 @@ public class AdminController {
   @GetMapping("/admin/user/{uId}/remove")
   public String  deleteUser(@PathVariable(value = "uId") long uId, Model model) {
     if (!testUserRoleAdmin(model)) return res.getUrlRedirectToMain();
-    if (uId > 0) userService.deleteUser(uId);
+    if (uId > 0) {
+      notesService.deleteNoteForAuthor(uId);
+      userService.deleteUser(uId);
+    }
     return res.getUrlRedirectToUserListEnable();
   }
 
@@ -57,6 +60,7 @@ public class AdminController {
   public String activatedUser(@PathVariable(value = "uId") long uId, Model model) {
     if (!testUserRoleAdmin(model)) return res.getUrlRedirectToMain();
     userService.activatedUser(uId);
+    notesService.activateNoteForAuthor(uId);
     return res.getUrlRedirectToUserListDisable();
   }
 
