@@ -206,9 +206,19 @@ public class NotesService {
    */
   public void removeTopicForNotes(Long idTopic) {
     Topics topic = topicService.getTopicForId(idTopic);
-    if (null == topic) return;
-    // TODO: Получаем список всех статей не зависимо от статуса с данной темой.
-    // TODO: Обнуляем темы у найденных статей.
+    if (null == topic) {
+      log.info("IN NotesService.removeTopicForNotes - the topic does not exist, idTopic = {}", idTopic);
+      return;
+    }
+    List<Notes> notes = res.getNotesRep().filterNoteAllForTopic(idTopic);
+    if (null == notes || notes.isEmpty()) {
+      log.info("IN NotesService.removeTopicForNotes - notes with this subject do not exist, idTopic = {}", idTopic);
+    }
+    for (Notes el: notes) {
+      el.setTopic(null);
+      res.getNotesRep().save(el);
+    }
+    log.info("IN NotesService.removeTopicForNotes - the deletion of the notes of this topic was successful, idTopic = {}", idTopic);
   }
 
   /**
