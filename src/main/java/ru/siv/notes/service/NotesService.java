@@ -70,14 +70,21 @@ public class NotesService {
       for (Notes el: notesTmp) {
         if (idTopic == el.getTopic().getId() && text.equals(el.getText())) return el.getId();
         else {
-          if (idTopic == el.getTopic().getId() || text.equals(el.getText())) return -1L;
+          if (idTopic == el.getTopic().getId() || text.equals(el.getText())) {
+            log.info("IN NotesService.addNote - the article with the current title and topic or text existst, title = {}, topic = {}, text = {}", title, el.getTopic().getName(), text);
+            return -1L;
+          }
         }
       }
+      log.info("IN NotesService.addNote - article creation error, author = {}, title = {}", idAuthor, title);
       return 0L;
     }
     Users author = userService.getUserById(idAuthor, Status.DELETED, false);
     Topics topic = topicService.getTopicForId(idTopic);
-    if (null == author || null == topic) return 0L;
+    if (null == author || null == topic) {
+      log.info("IN NotesService.addNote - article creation error, idAuthor = {}, idTopic = {}", idAuthor, idTopic);
+      return 0L;
+    }
     Notes note = new Notes();
     if (null != status) note.setStatus(status);
     note.setAuthor(author);
@@ -85,10 +92,42 @@ public class NotesService {
     note.setTitle(title);
     note.setText(text);
     note = res.getNotesRep().save(note);
+    log.info("IN NotesService.addNote - article created, id = {}, title = {}", note.getId(), title);
     return note.getId();
   }
 
-  // TODO: Редактирование статьи.
+  /**
+   * Изменение статьи.
+   * @param id      ключ статьи
+   * @param idTopic ключ темы
+   * @param title   заголовок
+   * @param text    текст
+   * @return при успехе возвращает ключ статьи, если есть совпадение по заголовку и тексту, возвращает -1, иначе 0.
+   */
+  public Long updateNote(Long id, Long idTopic, String title, String text) {
+    Notes note = getNoteForId(id, Status.DELETED, false);
+    if (null == title || null == note) {
+      log.info("IN NotesService.updateNote - article update error, id = {}, title = {}", id, title);
+      return 0L;
+    }
+    if (idTopic == note.getTopic().getId() && title.equals(note.getTitle()) && text.equals(note.getText())) {
+      log.info("IN NotesService.updateNote - an article with specified parameters exists, idTopic = {} and title = {} and text", idTopic, title);
+      return id;
+    }
+    Topics topic = topicService.getTopicForId(idTopic);
+    List<Notes> notes = res.getNotesRep().filterCompareByTitleAndByText(title, text);
+    if (null != notes && !notes.isEmpty()) {
+      log.info("IN NotesService.updateNote - an article with this title or with this text exists, title = {} or text", title);
+      return -1L;
+    }
+    note.setTopic(topic);
+    note.setTitle(title);
+    note.setText(text);
+    res.getNotesRep().save(note);
+    log.info("IN NotesService.updateNote - the update was successful, id = {}", note.getId());
+    return note.getId();
+  }
+
   // TODO: Деактивация статьи статьи.
   // TODO: Активация статьи.
 

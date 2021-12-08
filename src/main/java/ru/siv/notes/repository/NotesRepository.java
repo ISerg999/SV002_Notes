@@ -19,5 +19,6 @@ public interface NotesRepository extends CrudRepository<Notes, Long> {
   @Query("SELECT n FROM Notes n WHERE n.author.id = :idAuthor AND lower(n.title) = lower(:title)")
   List<Notes> filterByAuthorAndTitle(Long idAuthor, String title);
 //  @Query("SELECT a FROM Articles a WHERE lower(a.title) = lower(:title) AND lower(a.article) = lower(:text)")
-//  List<Articles> filterCompareByTitleByText(String title, String text);
+  @Query("SELECT n FROM Notes n WHERE lower(n.title) = lower(:title) AND lower(n.text) = lower(:text)")
+  List<Notes> filterCompareByTitleAndByText(String title, String text);
 }
