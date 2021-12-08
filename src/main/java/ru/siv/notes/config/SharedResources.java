@@ -25,16 +25,23 @@ public class SharedResources {
   private String urlUsrForm = "userForm";
   private String urlError = "msgError";
   private String urlAllUser = "allUsers";
+  private String urlAllTopic = "allTopic";
+  private String urlTopicId = "idTopic";
+  private String urlTopicName = "nameTopic";
 
   private String urlRedirectToMain = "redirect:/";
-  private String urlRedirectToListUserEnable = "redirect:/admin/user/list/enable";
-  private String urlRedirectToListUserDisable = "redirect:/admin/user/list/disable";
+  private String urlRedirectToUserListEnable = "redirect:/admin/user/list/enable";
+  private String urlRedirectToUserListDisable = "redirect:/admin/user/list/disable";
+  private String urlRedirectToTopicList = "redirect:/admin/topic/list";
 
   private String msgErrorPasswordDoNotMatch = "Пароли не совпадают.";
   private String msgErrorPasswordShortLength = "Короткая длина пароля.";
   private String msgErrorUser = "Пользователь с таким именем уже существует.";
   private String msgErrorUserShortLength = "Короткая длина имени пользователя.";
   private String msgErrorFullUserShortLength = "Короткая длина полного имени пользователя.";
+  private String msgErrorTopicShortLength = "Короткая длина названия темы.";
+  private String msgErrorTopic = "Такая тема существует.";
+  private String msgErrorAdd = "Ошибка добавления.";
 
   @Autowired
   private RolesRepository rolesRep;
