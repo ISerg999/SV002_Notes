@@ -12,6 +12,7 @@ import ru.siv.notes.model.Status;
 import ru.siv.notes.model.Users;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,55 +27,58 @@ public class UserService {
   private IAuthenticationFacade authenticationFacade;
 
   /**
-   * Возвращает объект пользователя по его ключу.
-   * @param id    ключ пользователя
-   * @param isAny true - любого, false - для тех, кто не помечен как DELETED
+   * Возвращает объект пользователя по его ключу и статусу.
+   * @param id     ключ пользователя
+   * @param status статус пользователя, если null, то любой
+   * @param isStat если статус не null, то: true - если соответствует статусу, false - если не соответствует статусу
    * @return если нашел, то объект пользователя, иначе null
    */
-  public Users getUserById(Long id, boolean isAny) {
+  public Users getUserById(Long id, Status status, boolean isStat) {
     Users user = res.getUsersRep().findById(id).orElse(null);
-    if (!isAny && null != user && user.getStatus() == Status.DELETED) user = null;
-    if (null != user) {
-      log.info("IN UserService.getUserById - id = {}, user = {}, new id = {}", id, user, user.getId());
-    } else {
-      log.info("IN UserService.getUserById - user not found, id = {}", id);
-    }
+    user = testUserStatus(user, status, isStat);
+    if (null != user) log.info("IN UserService.getUserById - id = {}, user = {}, new id = {}", id, user, user.getId());
+    else log.info("IN UserService.getUserById - user not found, id = {}", id);
     return user;
   }
 
   /**
-   * Возвращает объект пользователя по его имени.
+   * Возвращает объект пользователя по его имени и статусу.
    * @param userName имя пользователя
-   * @param isAny    true - любого, false - для тех, кто не помечен как DELETED
+   * @param status   статус пользователя, если null, то любой
+   * @param isStat   если статус не null, то: true - если соответствует статусу, false - если не соответствует статусу
    * @return объект пользователя, либо null, если не найден
    */
-  public Users getUserByUsername(String userName, boolean isAny) {
+  public Users getUserByUsername(String userName, Status status, boolean isStat) {
     Users user = res.getUsersRep().findByUsername(userName);
-    if (!isAny && null != user && user.getStatus() == Status.DELETED) user = null;
+    user = testUserStatus(user, status, isStat);
     log.info("IN UserService.getUserByUsername - username = {}, user = {}", userName, user);
     return user;
   }
 
   /**
-   * Возвращает список пользователей.
-   * @param isAny true - любого, false - для тех, кто не помечен как DELETED
+   * Возвращает список пользователей с заданным статусом.
+   * @param status статус пользователя, если null, то любой
+   * @param isStat если статус не null, то: true - если соответствует статусу, false - если не соответствует статусу
    * @return список пользователей
    */
-  public List<Users> getAllUser(boolean isAny) {
-    List<Users> users;
-    if (isAny) users = (List<Users>) res.getUsersRep().findAll();
-    else users = res.getUsersRep().queryAllNotDeleted();
+  public List<Users> getAllUser(Status status, boolean isStat) {
+    List<Users> users = new ArrayList<>();
+    if (null == status) users = res.getUsersRep().queryAllUserOredrByName();
+    else {
+      if (isStat) users = res.getUsersRep().queryUserAllForStatusOrderByName(status);
+      else users = res.getUsersRep().queryUserAllForNotStatusOrderByName(status);
+    }
     log.info("IN UserService.getAll - users found = {}", users.size());
     return users;
   }
 
   /**
    * Добавляет пользователя.
-   * @param user  объект нового пользователя
-   * @param isNew 1 - устанавливает статус в ACTIVE, 0 - оставляет статус по умолчанию, что был в объекте, -1 устанавливает в NOT_ACTIVE
+   * @param user   объект нового пользователя
+   * @param status устанавливаемый статус, если null, то статус не меняет
    * @return true - добавление прошло успешно, false - добавление пользователя не удалось
    */
-  public boolean addUser(Users user, int isNew) {
+  public boolean addUser(Users user, Status status) {
     Users userFromDB = res.getUsersRep().findByUsername(user.getUsername());
     if (null != userFromDB) {
       log.info("IN UserService.addUser - a user with the name '{}' exists in the database", user.getUsername());
@@ -83,10 +87,7 @@ public class UserService {
     Roles role = res.getRolesRep().findByName(res.getRoleUser());
     user.setRole(role);
     user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-    if (isNew > 0) user.setStatus(Status.ACTIVE);
-    else {
-      if (isNew < 0) user.setStatus(Status.NOT_ACTIVE);
-    }
+    if (null != status) user.setStatus(status);
     res.getUsersRep().save(user);
     log.info("IN UserService.addUser - he user with the name '{}' is added to the database", user.getUsername());
     return true;
@@ -98,17 +99,16 @@ public class UserService {
    * @return true - пользователь помечен как удалённый, false - пометить пользователя как удалённый не удалось
    */
   public boolean deleteUser(Long id) {
-    Users user = getUserById(id, false);
+    Users user = getUserById(id, Status.DELETED, false);
     if (null != user) {
       if (res.getRoleAdmin().equals(user.getRole().getName())) {
         log.info("IN UserService.deleteUser - It is impossible to execute, username = {}, role = {}", user.getUsername(), res.getRoleAdmin());
         return false;
       } else {
-        String username = user.getUsername();
         // TODO: Деактивируем все статьи данного пользователя.
         user.setStatus(Status.DELETED);
         res.getUsersRep().save(user);
-        log.info("IN UserService.deleteUser - user with id: {} successfully deleted", username);
+        log.info("IN UserService.deleteUser - user with id: {} successfully deleted", user.getUsername());
         return true;
       }
     }
@@ -116,13 +116,31 @@ public class UserService {
     return false;
   }
 
+  /**
+   * Получение объекта с информацией о текущем пользователе.
+   * @return объект с информацией о текущем пользователе
+   */
   public InfoUser getCurrentUser() {
     Authentication authentication = authenticationFacade.getAuthentication();
     String userName = authentication.getName();
     if (res.getAnonymousUser().equals(userName)) return new InfoUser();
-    Users user = getUserByUsername(userName, false);
+    Users user = getUserByUsername(userName, Status.DELETED, false);
     InfoUser infoUser = new InfoUser();
     return infoUser.setUser(user);
+  }
+
+  /**
+   * Проверка пользователя на заданный статус.
+   * @param user   проверяемый пользователь
+   * @param status статус пользователя, если null, то любой
+   * @param isStat если статус не null, то: true - если соответствует статусу, false - если не соответствует статусу
+   * @return проверенный пользователь, или null, если пользователь не соответствует проверенному
+   */
+  private Users testUserStatus(Users user, Status status, boolean isStat) {
+    if (null != user && null != status) {
+      if ((isStat && user.getStatus() != status) || (!isStat && user.getStatus() == status)) user = null;
+    }
+    return user;
   }
 
   public class InfoUser {

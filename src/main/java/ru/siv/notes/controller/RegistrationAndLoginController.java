@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.siv.notes.config.SharedResources;
+import ru.siv.notes.model.Status;
 import ru.siv.notes.model.Users;
 import ru.siv.notes.service.UserService;
 
@@ -55,7 +56,7 @@ public class RegistrationAndLoginController {
       model.addAttribute(res.getUrlError(), res.getMsgErrorFullUserShortLength());
       return "registration";
     }
-    if (userForm.getUsername().length() < 2 || !userService.addUser(userForm, 1)) {
+    if (userForm.getUsername().length() < 2 || !userService.addUser(userForm, Status.ACTIVE)) {
       if (userForm.getUsername().length() < 2) msgError = res.getMsgErrorUserShortLength();
       else msgError = res.getMsgErrorUser();
       model.addAttribute(res.getUrlError(), msgError);

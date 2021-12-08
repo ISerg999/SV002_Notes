@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import ru.siv.notes.config.SharedResources;
+import ru.siv.notes.model.Status;
 import ru.siv.notes.service.UserService;
 
 /**
@@ -26,7 +27,7 @@ public class AdminController {
     UserService.InfoUser infoUser = userService.getCurrentUser();
     if (0 != infoUser.getTypeRoleUser()) return res.getUrlRedirectToMain();
     model.addAttribute(res.getUrlInfoUser(), infoUser);
-    model.addAttribute(res.getUrlAllUser(), userService.getAllUser(false));
+    model.addAttribute(res.getUrlAllUser(), userService.getAllUser(Status.DELETED, false));
     return "admins/user-list-enable";
   }
 
