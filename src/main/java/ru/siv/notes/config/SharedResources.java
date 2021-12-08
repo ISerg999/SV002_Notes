@@ -28,6 +28,7 @@ public class SharedResources {
 
   private String urlRedirectToMain = "redirect:/";
   private String urlRedirectToListUserEnable = "redirect:/admin/user/list/enable";
+  private String urlRedirectToListUserDisable = "redirect:/admin/user/list/disable";
 
   private String msgErrorPasswordDoNotMatch = "Пароли не совпадают.";
   private String msgErrorPasswordShortLength = "Короткая длина пароля.";
