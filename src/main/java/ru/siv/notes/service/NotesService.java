@@ -128,13 +128,113 @@ public class NotesService {
     return note.getId();
   }
 
-  // TODO: Деактивация статьи статьи.
-  // TODO: Активация статьи.
+  /**
+   * Помечаем статью как удалённую.
+   * @param id ключ статьи
+   * @return true - статья помечена как удалённая, false - пометить статью как удалённую не удалось
+   */
+  public boolean deleteNote(Long id) {
+    Notes note = getNoteForId(id, Status.DELETED, false);
+    if (!noteSetStatus(note, Status.DELETED)) {
+      log.info("IN NotesService.deleteNote - it is not possible to delete an note, id = {}", id);
+      return false;
+    }
+    log.info("IN NotesService.deleteNote - notes is marked for deletion, id = {}", id);
+    return true;
+  }
 
+  /**
+   * Снятие удаление у статьи.
+   * @param id ключ статьи
+   * @return true - статус удаленный снят, false - статус удалённый снять не получилось
+   */
+  public boolean activatedNote(Long id) {
+    Notes note = getNoteForId(id, Status.DELETED, true);
+    if (!noteSetStatus(note, Status.ACTIVE)) {
+      log.info("IN NotesService.activatedNote - it is impossible to restore the note, id = {}", id);
+      return false;
+    }
+    log.info("IN NotesService.activatedNote - the note has been reinstated, id = {}", id);
+    return true;
+  }
+
+  /**
+   * Помечаем статьи как удалённые для заданного автора.
+   * @param idAuthor ключ автора
+   */
+  public void deleteNoteForAuthor(Long idAuthor) {
+    Users author = userService.getUserById(idAuthor, null, true);
+    if (null == author) {
+      log.info("IN NotesService.deleteNoteForAuthor - author not found, idAuthor = {}", idAuthor);
+      return;
+    }
+    List<Notes> notes = res.getNotesRep().filterNoteAllForAuthor(idAuthor);
+    if (null == notes || notes.isEmpty()) {
+      log.info("IN NotesService.deleteNoteForAuthor - the author has no notes, idAuthor = {}", idAuthor);
+      return;
+    }
+    for (Notes el: notes) {
+      noteSetStatus(el, Status.DELETED);
+    }
+    log.info("IN NotesService.deleteNoteForAuthor - notes deactivated, idAuthor = {}", idAuthor);
+  }
+
+  /**
+   * Восстанавливаем статьи для заданного автора.
+   * @param idAuthor ключ автора
+   */
+  public void activateNoteForAuthor(Long idAuthor) {
+    Users author = userService.getUserById(idAuthor, Status.DELETED, false);
+    if (null == author) {
+      log.info("IN NotesService.activateNoteForAuthor - author not found, idAuthor = {}", idAuthor);
+      return;
+    }
+    List<Notes> notes = res.getNotesRep().filterNoteAllForAuthor(idAuthor);
+    if (null == notes || notes.isEmpty()) {
+      log.info("IN NotesService.activateNoteForAuthor - the author has no notes, idAuthor = {}", idAuthor);
+      return;
+    }
+    for (Notes el: notes) {
+      noteSetStatus(el, Status.ACTIVE);
+    }
+    log.info("IN NotesService.activateNoteForAuthor - notes deactivated, idAuthor = {}", idAuthor);
+  }
+
+  /**
+   * Удаление тем у статей с заданной темой.
+   * @param idTopic ключ удаляемой темы
+   */
+  public void removeTopicForNotes(Long idTopic) {
+    Topics topic = topicService.getTopicForId(idTopic);
+    if (null == topic) return;
+    // TODO: Получаем список всех статей не зависимо от статуса с данной темой.
+    // TODO: Обнуляем темы у найденных статей.
+  }
+
+  /**
+   * Проверка статьи на статус.
+   * @param note   объект статьи
+   * @param status проверяемый статус, если null, то статус может быть любой
+   * @param isStat true - соответствует статусу, false - не соответствует статусу
+   * @return объект статьи, либо null, если статусу не соответствует
+   */
   private Notes testNoteStatus(Notes note, Status status, boolean isStat) {
     if (null != note && null != status) {
       if ((isStat && note.getStatus() != status) || (!isStat && note.getStatus() == status)) note = null;
     }
     return note;
+  }
+
+  /**
+   * Устанавливает в статье заданный статус
+   * @param note   объект статьи
+   * @param status устанавливаемый статус
+   * @return true - изменение статуса удачно, false - статус не был изменен
+   */
+  private boolean noteSetStatus(Notes note, Status status) {
+    if (null == note) return false;
+    note.setStatus(status);
+    res.getNotesRep().save(note);
+    return true;
   }
 }
