@@ -94,6 +94,41 @@ public class UserService {
   }
 
   /**
+   * Клонирование объекта пользователя.
+   * @param user клонируемый объект.
+   * @return новый объект пользователя
+   */
+  public Users cloneUser(Users user) {
+    Users newUser = new Users();
+    newUser.setCreated(user.getCreated());
+    newUser.setStatus(user.getStatus());
+    newUser.setUsername(user.getUsername());
+    newUser.setFullName(user.getFullName());
+    newUser.setRole(user.getRole());
+    log.info("IN UserService.cloneUser - clone user = {}", newUser);
+    return newUser;
+  }
+
+  /**
+   * Изменяет данные пользователя.
+   * @param user изменяемые данные
+   * @return true - изменение  прошло успешно, false - изменение не удалось
+   */
+  public boolean updateUser(Long id, Users user) {
+    Users userFromDB = getUserById(id, null, true);
+    if (null == userFromDB)
+    {
+      log.info("IN UserService.updateUser - user not found, id = {}", id);
+      return false;
+    }
+    userFromDB.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+    userFromDB.setFullName(user.getFullName());
+    res.getUsersRep().save(userFromDB);
+    log.info("IN UserService.updateUser - user change was successful, id = {}", id);
+    return true;
+  }
+
+  /**
    * Помечаем пользователя как удалённого.
    * @param id ключ пользователя
    * @return true - пользователь помечен как удалённый, false - пометить пользователя как удалённый не удалось

@@ -28,6 +28,7 @@
             </div>
         </div>
         <a class="navbar-brand" th:href="@{/}">Главная</a>
+        <a th:if="${infoUser.typeRoleUser>=0}" class="navbar-brand" th:href="@{/profile}">Профиль</a>
     </nav>
 
 </div>
