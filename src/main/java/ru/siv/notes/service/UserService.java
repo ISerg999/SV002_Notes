@@ -94,7 +94,7 @@ public class UserService {
   }
 
   /**
-   * Помечаем пользователя по ключу как удалённого.
+   * Помечаем пользователя как удалённого.
    * @param id ключ пользователя
    * @return true - пользователь помечен как удалённый, false - пометить пользователя как удалённый не удалось
    */
@@ -113,6 +113,24 @@ public class UserService {
       }
     }
     log.info("IN UserService.deleteUser - user not found, id = {}", id);
+    return false;
+  }
+
+  /**
+   * Активация пользователя.
+   * @param id ключ пользователя
+   * @return true - активация удалась, false - активация не удалась
+   */
+  public boolean activatedUser(Long id) {
+    Users user = getUserById(id, Status.DELETED, true);
+    if (null != user) {
+      // TODO: Активируем все статьи данного пользователя.
+      user.setStatus(Status.ACTIVE);
+      res.getUsersRep().save(user);
+      log.info("IN UserService.activatedUser - user with id: {} successfully activate", user.getUsername());
+      return true;
+    }
+    log.info("IN UserService.activatedUser - user not found, id = {}", id);
     return false;
   }
 
