@@ -9,10 +9,8 @@
 
     <main>
         <form method="post" class="row g-3">
-            <h2>Регистрация</h2>
-            <div th:if="${not #strings.isEmpty(msgError)}" class="alert alert-danger col-12" role="alert">
-                <span th:text="${msgError}"></span>
-            </div>
+            <h1>Регистрация</h1>
+            <div th:insert="blocks/forms :: msg_error"></div>
             <div class="col-12">
                 <label for="inputUserName" class="form-label">Логин</label>
                 <input type="text" name="username" placeholder="Логин" class="form-control" autofocus="true" id="inputUserName" th:field="*{userForm.username}">

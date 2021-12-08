@@ -74,13 +74,13 @@ public class AdminController {
   }
 
   @PostMapping("/admin/topic/add")
-  public String topicPostAdd(@RequestParam(name = "newTopic") String newTopic, Model model) {
+  public String topicPostAdd(@RequestParam(name = "nameTopic") String nameTopic, Model model) {
     if (!testUserRoleAdmin(model)) return res.getUrlRedirectToMain();
-    if (newTopic.length() < 1) {
+    if (nameTopic.length() < 1) {
       model.addAttribute(res.getUrlError(), res.getMsgErrorTopicShortLength());
       return "admins/topic-add";
     }
-    if (!topicService.addTopic(newTopic)) {
+    if (!topicService.addTopic(nameTopic)) {
       model.addAttribute(res.getUrlError(), res.getMsgErrorTopic());
       return "admins/topic-add";
     }

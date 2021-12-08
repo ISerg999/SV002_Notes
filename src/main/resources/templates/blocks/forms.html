@@ -1,0 +1,11 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="msg_error">
+  <div th:if="${not #strings.isEmpty(msgError)}" class="alert alert-danger col-12" role="alert">
+    <span th:text="${msgError}"></span>
+  </div>
+</div>
+
+
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="blocks/header :: common_header(~{::title})">
+  <title>Статьи. Админка. Список тем.</title>
+</head>
+<body>
+<div class="container py-3">
+  <div th:insert="blocks/header :: headline"></div>
+
+  <main>
+    <h1>Список тем</h1>
+    <table class="table table-bordered table-striped">
+      <thead class="thead-dark">
+      <th class="col">Тема</th>
+      <th class="col-1">Редактирование</th>
+      <th class="col-1">Удаление</th>
+      </thead>
+      <tr th:each="el : ${allTopic}">
+        <td th:text="${el.name}"></td>
+        <td><a th:href="@{/admin/topic/{uId}/edit(uId=${el.id})}" class="btn btn-secondary">Редактировать</a></td>
+        <td><a th:href="@{/admin/topic/{uId}/remove(uId=${el.id})}" class="btn btn-danger">Удаление</a></td>
+      </tr>
+    </table>
+  </main>
+
+  <div th:insert="blocks/footer :: footer"></div>
+</div>
+</body>
+</html>

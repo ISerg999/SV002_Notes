@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="blocks/header :: common_header(~{::title})">
+  <title>Статьи. Админка. Добавление тем.</title>
+</head>
+<body>
+<div class="container py-3">
+  <div th:insert="blocks/header :: headline"></div>
+
+  <main>
+    <form method="post" class="row g-3">
+      <h1>Добавление тем</h1>
+      <div th:insert="blocks/forms :: msg_error"></div>
+      <div class="col-12">
+        <label for="inputNameTopic" class="form-label">Тема</label>
+        <input type="text" name="nameTopic" placeholder="Тема" class="form-control" id="inputNameTopic">
+      </div>
+      <div class="col-12">
+        <button type="submit" class="btn btn-primary">Добавить</button>
+      </div>
+    </form>
+  </main>
+
+  <div th:insert="blocks/footer :: footer"></div>
+</div>
+</body>
+</html>
