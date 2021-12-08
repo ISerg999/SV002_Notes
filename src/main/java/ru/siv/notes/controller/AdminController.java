@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.siv.notes.config.SharedResources;
 import ru.siv.notes.model.Status;
+import ru.siv.notes.service.NotesService;
 import ru.siv.notes.service.TopicService;
 import ru.siv.notes.service.UserService;
 
@@ -24,6 +25,8 @@ public class AdminController {
   private UserService userService;
   @Autowired
   private TopicService topicService;
+  @Autowired
+  private NotesService notesService;
 
   // Просмотр списка и деактивация действующих пользователей.
 
@@ -121,6 +124,7 @@ public class AdminController {
   @GetMapping("/admin/topic/{id}/remove")
   public String topicDelete(@PathVariable(value="id") Long id, Model model) {
     if (!testUserRoleAdmin(model)) return res.getUrlRedirectToMain();
+    notesService.removeNotesForTopic(id);
     topicService.removeTopic(id);
     return res.getUrlRedirectToTopicList();
   }

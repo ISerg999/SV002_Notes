@@ -204,7 +204,7 @@ public class NotesService {
    * Удаление тем у статей с заданной темой.
    * @param idTopic ключ удаляемой темы
    */
-  public void removeTopicForNotes(Long idTopic) {
+  public void removeNotesForTopic(Long idTopic) {
     Topics topic = topicService.getTopicForId(idTopic);
     if (null == topic) {
       log.info("IN NotesService.removeTopicForNotes - the topic does not exist, idTopic = {}", idTopic);

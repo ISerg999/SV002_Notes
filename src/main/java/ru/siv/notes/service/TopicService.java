@@ -126,7 +126,6 @@ public class TopicService {
   public boolean removeTopic(Long id) {
     Topics topic = res.getTopicsRep().findById(id).orElse(null);
     if (null != topic) {
-      // TODO: Всем статьям с данной темой присвоить пустую тему, <Без темы>.
       res.getTopicsRep().delete(topic);
       log.info("IN TopicService.removeTopic - topic with id = {} deleted", id);
       return true;
