@@ -62,8 +62,8 @@ public class NotesController {
                             @RequestParam(name = "noteText") String noteText,
                             Model model) {
     UserService.InfoUser infoUser = userService.getCurrentUser();
-    String msgError = "";
     if (infoUser.getTypeRoleUser() > 0) {
+      String msgError = "";
       if (noteTitle.isEmpty()) msgError = res.getMsgErrorNoteTitleShortLength() + " ";
       if (noteText.isEmpty()) msgError = msgError + res.getMsgErrorNoteTextShortLength();
       if (msgError.isEmpty()) {
@@ -91,6 +91,52 @@ public class NotesController {
     return res.getUrlRedirectToNoteList();
   }
 
-  // TODO: Редактирование статьи (только автором статьи)
+  @GetMapping("/note/{id}/edit")
+  public String noteEdit(@PathVariable(value="id") Long id, Model model) {
+    UserService.InfoUser infoUser = userService.getCurrentUser();
+    if (infoUser.getTypeRoleUser() <= 0) return res.getUrlRedirectToNoteList();
+    model.addAttribute(res.getUrlInfoUser(), infoUser);
+    Notes note = notesService.getNoteForId(id, Status.DELETED, false);
+    if (null == note || note.getAuthor().getId() != infoUser.getUser().getId()) return res.getUrlRedirectToNoteList();
+    model.addAttribute(res.getUrlNewNote(), note);
+    model.addAttribute(res.getUrlTopicList(), topicService.getAllTopicWithNull());
+    model.addAttribute(res.getUrlError(), "");
+    return "notes/note-edit";
+  }
+
+  @PostMapping("/note/{id}/edit")
+  public String notePostUpdate(@PathVariable(value="id") Long id,
+                               @RequestParam(name = "idTopic") Long idTopic,
+                               @RequestParam(name = "noteTitle") String noteTitle,
+                               @RequestParam(name = "noteText") String noteText,
+                               Model model) {
+    UserService.InfoUser infoUser = userService.getCurrentUser();
+    if (infoUser.getTypeRoleUser() > 0) {
+      String msgError = "";
+      if (noteTitle.isEmpty()) msgError = res.getMsgErrorNoteTitleShortLength() + " ";
+      if (noteText.isEmpty()) msgError = msgError + res.getMsgErrorNoteTextShortLength();
+      if (msgError.isEmpty()) {
+        Long newId = notesService.updateNote(id, idTopic, noteTitle, noteText);
+        if (newId > 0) return res.getUrlRedirectToRead() + id;
+        else {
+          if (newId < 0) msgError = res.getMsgErrorNoteMatching();;
+        }
+      }
+      if (!msgError.isEmpty()) {
+        model.addAttribute(res.getUrlInfoUser(), infoUser);
+        Notes note = notesService.getNoteForId(id, Status.DELETED, false);
+        if (null == note || note.getAuthor().getId() != infoUser.getUser().getId()) return res.getUrlRedirectToNoteList();
+        note.setTopic(topicService.getTopicForId(idTopic));
+        note.setTitle(noteTitle);
+        note.setText(noteText);
+        model.addAttribute(res.getUrlNewNote(), note);
+        model.addAttribute(res.getUrlTopicList(), topicService.getAllTopicWithNull());
+        model.addAttribute(res.getUrlError(), msgError);
+        return "notes/note-edit";
+      }
+    }
+    return res.getUrlRedirectToNoteList();
+  }
+
   // TODO: Удаление статьи (только автором статьи или админом)
 }

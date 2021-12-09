@@ -23,11 +23,13 @@
     <p></p>
     <p th:utext="${note.text}"></p>
     <p></p>
-    <th:block th:if="${infoUser.user.id==note.author.id}">
-      <p><a class="btn btn-secondary" th:href="@{/}">Редактировать</a></p>
-    </th:block>
-    <th:block th:if="${infoUser.typeRoleUser==0 || infoUser.user.id==note.author.id}">
-      <p><a class="btn btn-danger" th:href="@{/}">Удалить</a></p>
+    <th:block th:if="${infoUser.typeRoleUser>=0}">
+      <div th:if="${infoUser.user.id==note.author.id}">
+        <p><a class="btn btn-secondary" th:href="@{/note/{id}/edit(id=${note.id})}">Редактировать</a></p>
+      </div>
+      <div th:if="${infoUser.typeRoleUser==0 || infoUser.user.id==note.author.id}">
+        <p><a class="btn btn-danger" th:href="@{/}">Удалить</a></p>
+      </div>
     </th:block>
   </main>
 

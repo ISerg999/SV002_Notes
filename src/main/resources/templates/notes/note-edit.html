@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="blocks/header :: common_header(~{::title})">
+  <title>Статьи. Редактирование статьи.</title>
+</head>
+<body>
+<div class="container py-3">
+  <div th:insert="blocks/header :: headline"></div>
+
+  <main>
+    <form method="post" class="row g-3">
+      <h1>Редактирование статьи</h1>
+      <div th:replace="notes/note-add :: noteForm"></div>
+      <div class="col-12">
+        <button type="submit" class="btn btn-primary">Изменить</button>
+      </div>
+    </form>
+  </main>
+
+  <div th:insert="blocks/footer :: footer"></div>
+</div>
+</body>
+</html>
