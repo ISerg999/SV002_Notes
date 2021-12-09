@@ -222,6 +222,23 @@ public class NotesService {
   }
 
   /**
+   * Возвращает пустой бланк статьи с заданным автором.
+   * @param author автор статьи
+   * @return бланк статьи
+   */
+  public Notes getBlankNote(Users author) {
+    Notes note = new Notes();
+    Topics topic = new Topics();
+    topic.setId(0L);
+    note.setAuthor(author);
+    note.setTopic(topic);
+    note.setStatus(Status.ACTIVE);
+    note.setTitle("");
+    note.setTitle("");
+    return note;
+  }
+
+  /**
    * Проверка статьи на статус.
    * @param note   объект статьи
    * @param status проверяемый статус, если null, то статус может быть любой

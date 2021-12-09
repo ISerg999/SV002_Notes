@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="blocks/header :: common_header(~{::title})">
+  <title>Статьи. Добавление статьи.</title>
+</head>
+<body>
+<div class="container py-3">
+  <div th:insert="blocks/header :: headline"></div>
+
+  <main>
+    <form method="post" class="row g-3">
+      <h1>Добавление статьи</h1>
+      <div th:fragment="noteForm">
+        <div th:insert="blocks/forms :: msg_error"></div>
+        <div class="col-12">
+          <label for="selectTopic" class="form-label">Тема</label>
+          <select name="idTopic" class="form-control" id="selectTopic">
+            <option th:each="el : ${topicList}" th:value="${el.id}" th:selected="${el.id==newNote.topic.id}? 'selected'"><spin th:text="${el.name}"></spin></option>
+          </select>
+        </div>
+        <div class="col-12">
+          <label for="inputTitle" class="form-label">Заголовок</label>
+          <input type="text" name="noteTitle" placeholder="Заголовок" class="form-control" id="inputTitle" th:value="${newNote.title}">
+        </div>
+        <div class="col-12">
+          <label for="inputText" class="form-label">Статья</label>
+          <textarea name="noteText" placeholder="Текст статьи" class="form-control" id="inputText" rows="5" th:text="${newNote.text}"></textarea>
+        </div>
+      </div>
+      <div class="col-12">
+        <button type="submit" class="btn btn-primary">Добавить</button>
+      </div>
+    </form>
+  </main>
+
+  <div th:insert="blocks/footer :: footer"></div>
+</div>
+</body>
+</html>
