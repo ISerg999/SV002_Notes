@@ -28,6 +28,7 @@ public class SharedResources {
   private String urlAllTopic = "allTopic";
   private String urlTopicId = "idTopic";
   private String urlTopicName = "nameTopic";
+  private String urlAllNote = "allNote";
 
   private String urlRedirectToMain = "redirect:/";
   private String urlRedirectToUserListEnable = "redirect:/admin/user/list/enable";
