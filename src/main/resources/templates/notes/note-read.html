@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="blocks/header :: common_header(~{::title})">
+  <title>Статьи. Список статей.</title>
+</head>
+<body>
+<div class="container py-3">
+  <div th:insert="blocks/header :: headline"></div>
+
+  <main>
+    <div class="container">
+      <div class="row">
+        <div class="col col-lg-3">
+          <p>Автор: <span class="fw-bold" th:text="${note.author.fullName}"></span></p>
+          <div class="col col-lg-5">&nbsp;</div>
+          <div class="col col-lg-auto">
+            <p>Тема: <span class="fw-bold" th:text="${note.topic.name}"></span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <h2 class="text-center" th:text="${note.title}"></h2>
+    <p></p>
+    <p th:utext="${note.text}"></p>
+    <p></p>
+    <th:block th:if="${infoUser.user.id==note.author.id}">
+      <p><a class="btn btn-secondary" th:href="@{/}">Редактировать</a></p>
+    </th:block>
+    <th:block th:if="${infoUser.typeRoleUser==0 || infoUser.user.id==note.author.id}">
+      <p><a class="btn btn-danger" th:href="@{/}">Удалить</a></p>
+    </th:block>
+  </main>
+
+  <div th:insert="blocks/footer :: footer"></div>
+</div>
+</body>
+</html>

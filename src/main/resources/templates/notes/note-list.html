@@ -25,11 +25,11 @@
         <td th:text="${el.topic.name}"></td>
         <td th:text="${el.title}"></td>
         <td th:text="${#temporals.format(el.created, 'yyyy-MM-dd HH:mm')}"></td>
-        <td><a class="btn btn-danger" th:href="@{/}">Почитать</a></td>
+        <td><a class="btn btn-primary" th:href="@{/note/{nId}(nId=${el.id})}">Почитать</a></td>
       </tr>
     </table>
     <th:block th:if="${infoUser.typeRoleUser>0}">
-      <p><a class="btn btn-primary" th:href="@{/note/add}">Создать статью</a></p>
+      <p><a class="btn btn-secondary" th:href="@{/note/add}">Создать статью</a></p>
     </th:block>
   </main>
 

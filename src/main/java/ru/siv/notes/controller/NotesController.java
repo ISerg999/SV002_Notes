@@ -36,7 +36,12 @@ public class NotesController {
 
   @GetMapping("/note/{id}")
   public String noteRead(@PathVariable(value="id") Long id, Model model) {
-    return res.getUrlRedirectToNoteList();
+    Notes note = notesService.getNoteForId(id, Status.DELETED, false);
+    if (null == note) return res.getUrlRedirectToNoteList();
+    UserService.InfoUser infoUser = userService.getCurrentUser();
+    model.addAttribute(res.getUrlInfoUser(), infoUser);
+    model.addAttribute(res.getUrlNote(), note);
+    return "notes/note-read";
   }
 
   @GetMapping("/note/add")
@@ -86,7 +91,6 @@ public class NotesController {
     return res.getUrlRedirectToNoteList();
   }
 
-  // TODO: Просмотр выбранной статьи.
   // TODO: Редактирование статьи (только автором статьи)
   // TODO: Удаление статьи (только автором статьи или админом)
 }
