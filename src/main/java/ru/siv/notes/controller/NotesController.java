@@ -138,5 +138,15 @@ public class NotesController {
     return res.getUrlRedirectToNoteList();
   }
 
-  // TODO: Удаление статьи (только автором статьи или админом)
+  @GetMapping("/note/{id}/remove")
+  public String noteRemove(@PathVariable(value="id") Long id, Model model) {
+    UserService.InfoUser infoUser = userService.getCurrentUser();
+    Notes note = notesService.getNoteForId(id, Status.DELETED, false);
+    if (null != note) {
+      if (0 == infoUser.getTypeRoleUser() || infoUser.getUser().getId() == note.getAuthor().getId()) {
+        notesService.deleteNote(id);
+      }
+    }
+    return res.getUrlRedirectToNoteList();
+  }
 }

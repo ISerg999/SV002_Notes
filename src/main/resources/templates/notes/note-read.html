@@ -28,7 +28,7 @@
         <p><a class="btn btn-secondary" th:href="@{/note/{id}/edit(id=${note.id})}">Редактировать</a></p>
       </div>
       <div th:if="${infoUser.typeRoleUser==0 || infoUser.user.id==note.author.id}">
-        <p><a class="btn btn-danger" th:href="@{/}">Удалить</a></p>
+        <p><a class="btn btn-danger" th:href="@{/note/{id}/remove(id=${note.id})}">Удалить</a></p>
       </div>
     </th:block>
   </main>
