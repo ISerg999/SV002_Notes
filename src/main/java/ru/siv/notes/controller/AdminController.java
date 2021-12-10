@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.siv.notes.config.SharedResources;
+import ru.siv.notes.model.Notes;
 import ru.siv.notes.model.Status;
 import ru.siv.notes.service.NotesService;
 import ru.siv.notes.service.TopicService;
@@ -139,6 +140,15 @@ public class AdminController {
     if (!testUserRoleAdmin(model)) return res.getUrlRedirectToMain();
     model.addAttribute(res.getUrlAllNote(), notesService.getAllNote(Status.DELETED, true));
     return "admins/note/note-list-deleted";
+  }
+
+  @GetMapping("/admin/note/{id}")
+  public String noteReadDeleted(@PathVariable(value="id") Long id, Model model) {
+    if (!testUserRoleAdmin(model)) return res.getUrlRedirectToMain();
+    Notes note = notesService.getNoteForId(id, Status.DELETED, true);
+    if (null == note) return res.getUrlRedirectToNoteListDisable();
+    model.addAttribute(res.getUrlNote(), note);
+    return "admins/note/note-read-disabled";
   }
 
   // TODO: Просмотр удалённой статьи (если не удалён автор).
