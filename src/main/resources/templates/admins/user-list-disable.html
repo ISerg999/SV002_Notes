@@ -1,26 +1,26 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="blocks/header :: common_header(~{::title})">
-  <title>Статьи. Админка. Пользователи удалённые.</title>
+  <title th:text="#{admin.user.list.disable.title}"></title>
 </head>
 <body>
 <div class="container py-3">
   <div th:insert="blocks/header :: headline"></div>
 
   <main>
-    <h1>Удалённые пользователи</h1>
+    <h1 th:text="#{admin.user.list.disable.h1}"></h1>
     <table class="table table-bordered table-striped">
       <thead class="thead-dark">
-      <th class="col-2">Пользователь</th>
-      <th class="col">Имя</th>
-      <th class="col-1">Роль</th>
-      <th class="col-1">Восстановить</th>
+      <th class="col-2" th:text="#{users.username}"></th>
+      <th class="col" th:text="#{users.full_name}"></th>
+      <th class="col-1" th:text="#{users.role}"></th>
+      <th class="col-1" th:text="#{element.restore}"></th>
       </thead>
       <tr th:each="el : ${allUsers}">
         <td th:text="${el.username}"></td>
         <td th:text="${el.fullName}"></td>
         <td th:text="${el.role.name}"></td>
-        <td><a class="btn btn-danger" th:href="@{/admin/user/{uId}/activated(uId=${el.id})}">Восстановить</a></td>
+        <td><a class="btn btn-danger" th:href="@{/admin/user/{uId}/activated(uId=${el.id})}" th:text="#{element.restore}"></a></td>
       </tr>
     </table>
   </main>

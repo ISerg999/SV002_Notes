@@ -10,28 +10,26 @@
 
 <div th:fragment="headline" class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
     <div class="d-flex align-items-left text-dark text-decoration-none">
-        <span class="fs-sm-1" th:text="'Пользователь: ' + ${infoUser.userName}"></span>
+        <span class="fs-sm-1" th:text="#{users.username} + ': ' + ${infoUser.userName}"></span>
     </div>
 
     <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto navbar navbar-expand-lg">
         <div class="container-fluid" th:if="${infoUser.typeRoleUser==0}">
             <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
-                    Админка
-                </button>
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false" th:text="#{menu.admin.title}"></button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                    <li><a class="dropdown-item" type="button" th:href="@{/admin/user/list/enable}">Активные пользователи</a></li>
-                    <li><a class="dropdown-item" type="button" th:href="@{/admin/user/list/disable}">Удалённые пользователи</a></li>
-                    <li><a class="dropdown-item" type="button" th:href="@{/admin/topic/list}">Темы</a></li>
-                    <li><a class="dropdown-item" type="button" th:href="@{/admin/topic/add}">Добавить тему</a></li>
-                    <li><a class="dropdown-item" type="button" th:href="@{/admin/note/list/disable}">Удалённые статьи</a></li>
+                    <li><a class="dropdown-item" type="button" th:href="@{/admin/user/list/enable}" th:text="#{menu.user.active}"></a></li>
+                    <li><a class="dropdown-item" type="button" th:href="@{/admin/user/list/disable}" th:text="#{menu.user.deleted}"></a></li>
+                    <li><a class="dropdown-item" type="button" th:href="@{/admin/topic/list}" th:text="#{menu.topics}"></a></li>
+                    <li><a class="dropdown-item" type="button" th:href="@{/admin/topic/add}" th:text="#{menu.topic.add}"></a></li>
+                    <li><a class="dropdown-item" type="button" th:href="@{/admin/note/list/disable}" th:text="#{menu.note.deleted}"></a></li>
                 </ul>
             </div>
         </div>
-        <a class="navbar-brand" th:href="@{/}">Главная</a>
-        <a class="navbar-brand" th:href="@{/note/list}">Статьи</a>
+        <a class="navbar-brand" th:href="@{/}" th:text="#{menu.home}"></a>
+        <a class="navbar-brand" th:href="@{/note/list}" th:text="#{menu.notes}"></a>
         <th:block th:if="${infoUser.typeRoleUser>=0}">
-            <a class="navbar-brand" th:href="@{/profile}">Профиль</a>
+            <a class="navbar-brand" th:href="@{/profile}" th:text="#{menu.profile}"></a>
         </th:block>
     </nav>
 

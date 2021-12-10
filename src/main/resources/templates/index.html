@@ -1,23 +1,23 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="blocks/header :: common_header(~{::title})">
-    <title>Статьи. Главная</title>
+    <title th:text="#{home.title}"></title>
 </head>
 <body>
 <div class="container py-3">
     <div th:insert="blocks/header :: headline"></div>
 
     <header>
-        <h1>Работа со статьями</h1>
-        <p>Этот проект создан в учебных целях для работы со статьями.</p>
+        <h1 th:text="#{home.h1}"></h1>
+        <p th:text="#{home.info}"></p>
     </header>
     <main>
         <th:block th:if="${infoUser.typeRoleUser<0}">
-            <p><a th:href="@{/login}" class="btn btn-primary">Войти</a></p>
-            <p><a th:href="@{/registration}" class="btn btn-primary">Зарегистрироваться</a></p>
+            <p><a class="btn btn-primary" th:href="@{/login}" th:text="#{authorization.login}"></a></p>
+            <p><a class="btn btn-primary" th:href="@{/registration}" th:text="#{authorization.registration}"></a></p>
         </th:block>
         <th:block th:if="${infoUser.typeRoleUser>=0}">
-            <p><a th:href="@{/logout}" class="btn btn-primary">Выйти</a></p>
+            <p><a class="btn btn-primary" th:href="@{/logout}" th:text="#{authorization.logout}"></a></p>
         </th:block>
     </main>
 

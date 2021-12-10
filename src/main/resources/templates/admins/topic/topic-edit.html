@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="blocks/header :: common_header(~{::title})">
-  <title>Статьи. Админка. Редактирование тем.</title>
+  <title th:text="#{admin.topic.edit.title}"></title>
 </head>
 <body>
 <div class="container py-3">
@@ -9,14 +9,14 @@
 
   <main>
     <form method="post" class="row g-3">
-      <h1>Редактирование тем</h1>
+      <h1 th:text="#{admin.topic.edit.h1}"></h1>
       <div th:insert="blocks/forms :: msg_error"></div>
       <div class="col-12">
-        <label for="inputNameTopic" class="form-label">Тема</label>
-        <input type="text" name="nameTopic" placeholder="Тема" class="form-control" id="inputNameTopic" th:value="${nameTopic}">
+        <label for="inputNameTopic" class="form-label" th:text="#{topic.topic}"></label>
+        <input type="text" name="nameTopic" th:placeholder="#{topic.topic}" class="form-control" id="inputNameTopic" th:value="${nameTopic}">
       </div>
       <div class="col-12">
-        <button type="submit" class="btn btn-primary">Изменить</button>
+        <button type="submit" class="btn btn-primary" th:text="#{element.change}"></button>
       </div>
     </form>
   </main>

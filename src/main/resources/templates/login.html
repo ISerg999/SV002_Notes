@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="blocks/header :: common_header(~{::title})">
-    <title>Статьи. Главная</title>
+    <title th:text="#{login.title}"></title>
 </head>
 <body>
 <div class="container py-3">
@@ -9,21 +9,21 @@
 
     <main>
         <form method="post" class="row g-3" th:action="@{/login}">
-            <h2>Вход в систему</h2>
+            <h1 th:text="#{login.h1}"></h1>
             <div class="col-12">
-                <label for="inputUsername" class="form-label">Имя пользователя</label>
-                <input type="text" name="username" placeholder="Пользователь" class="form-control" autofocus="true" id="inputUsername">
+                <label for="inputUsername" class="form-label" th:text="#{users.username}"></label>
+                <input type="text" name="username" th:placeholder="#{users.username}" class="form-control" autofocus="true" id="inputUsername">
             </div>
             <div class="col-12">
-                <label for="inputPassword" class="form-label">Пароль</label>
-                <input type="password" name="password" placeholder="Пароль" class="form-control" id="inputPassword">
+                <label for="inputPassword" class="form-label" th:text="#{users.password}"></label>
+                <input type="password" name="password" th:placeholder="#{users.password}" class="form-control" id="inputPassword">
             </div>
             <div class="col-12">
-                <button type="submit" class="btn btn-primary">Войти</button>
+                <button type="submit" class="btn btn-primary" th:text="#{authorization.login}"></button>
             </div>
         </form>
         <br>
-        <h4><a th:href="@{/registration}" class="btn btn-secondary">Зарегистрироваться</a></h4>
+        <h4><a th:href="@{/registration}" class="btn btn-secondary" th:text="#{authorization.registration}"></a></h4>
     </main>
 
     <div th:insert="blocks/footer :: footer"></div>

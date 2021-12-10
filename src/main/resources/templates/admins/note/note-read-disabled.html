@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="blocks/header :: common_header(~{::title})">
-  <title>Статьи. Просмотр удалённой статьи.</title>
+  <title th:text="#{admin.note.deleted.title}"></title>
 </head>
 <body>
 <div class="container py-3">
@@ -11,10 +11,10 @@
     <div class="container">
       <div class="row">
         <div class="col col-lg-3">
-          <p>Автор: <span class="fw-bold" th:text="${note.author.fullName}"></span></p>
+          <p><span th:text="#{note.base.author}"></span>: <span class="fw-bold" th:text="${note.author.fullName}"></span></p>
           <div class="col col-lg-5">&nbsp;</div>
           <div class="col col-lg-auto">
-            <p>Тема: <span class="fw-bold" th:text="${note.topic.name}"></span></p>
+            <p><span th:text="#{note.base.topic}"></span>: <span class="fw-bold" th:text="${note.topic.name}"></span></p>
           </div>
         </div>
       </div>
@@ -24,7 +24,7 @@
     <p th:utext="${note.text}"></p>
     <p></p>
     <th:block th:if="${infoUser.typeRoleUser==0}">
-      <p><a class="btn btn-primary" th:href="@{/admin/note/{id}/activated(id=${note.id})}">Восстановить</a></p>
+      <p><a class="btn btn-primary" th:href="@{/admin/note/{id}/activated(id=${note.id})}" th:text="#{element.restore}"></a></p>
     </th:block>
   </main>
 

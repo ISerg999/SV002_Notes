@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="blocks/header :: common_header(~{::title})">
-  <title>Статьи. Редактирование статьи.</title>
+  <title th:text="#{note.edit.title}"></title>
 </head>
 <body>
 <div class="container py-3">
@@ -9,10 +9,10 @@
 
   <main>
     <form method="post" class="row g-3">
-      <h1>Редактирование статьи</h1>
+      <h1 th:text="#{note.edit.h1}"></h1>
       <div th:replace="notes/note-add :: noteForm"></div>
       <div class="col-12">
-        <button type="submit" class="btn btn-primary">Изменить</button>
+        <button type="submit" class="btn btn-primary" th:text="#{element.change}"></button>
       </div>
     </form>
   </main>

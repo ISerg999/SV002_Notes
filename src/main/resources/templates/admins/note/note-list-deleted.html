@@ -1,31 +1,31 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="blocks/header :: common_header(~{::title})">
-  <title>Статьи. Список удалённых статей.</title>
+  <title th:text="#{admin.note.list.deleted.title}"></title>
 </head>
 <body>
 <div class="container py-3">
   <div th:insert="blocks/header :: headline"></div>
 
   <main>
-    <h1>Удалённые статьи</h1>
+    <h1 th:text="#{admin.note.list.deleted.h1}"></h1>
     <div th:if="${allNote.size < 1}">
-      <p>Нет удалённых статей!</p>
+      <p th:text="#{admin.note.list.deleted.none}"></p>
     </div>
     <table class="table table-bordered table-striped" th:if="${allNote.size > 0}">
       <thead class="thead-dark">
-      <th class="col-1">Автор</th>
-      <th class="col-3">Тема</th>
-      <th class="col">Заголовок</th>
-      <th class="col-2">Дата создания</th>
-      <th class="col-1">Почитать</th>
+      <th class="col-1" th:text="#{note.base.author}"></th>
+      <th class="col-3" th:text="#{note.base.topic}"></th>
+      <th class="col" th:text="#{note.base.title}"></th>
+      <th class="col-2" th:text="#{base.created}"></th>
+      <th class="col-1" th:text="#{element.read}"></th>
       </thead>
       <tr th:each="el : ${allNote}">
         <td th:text="${el.author.fullName}"></td>
         <td th:text="${el.topic.name}"></td>
         <td th:text="${el.title}"></td>
         <td th:text="${#temporals.format(el.created, 'yyyy-MM-dd HH:mm')}"></td>
-        <td><a class="btn btn-primary" th:href="@{/admin/note/{nId}(nId=${el.id})}">Почитать</a></td>
+        <td><a class="btn btn-primary" th:href="@{/admin/note/{nId}(nId=${el.id})}" th:text="#{element.read}"></a></td>
       </tr>
     </table>
   </main>
