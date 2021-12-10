@@ -24,6 +24,8 @@ public class UserService {
   private BCryptPasswordEncoder bCryptPasswordEncoder;
   @Autowired
   private IAuthenticationFacade authenticationFacade;
+  @Autowired
+  private NotesService notesService;
 
   /**
    * Возвращает объект пользователя по его ключу и статусу.
@@ -139,6 +141,7 @@ public class UserService {
         log.info("IN UserService.deleteUser - It is impossible to execute, username = {}, role = {}", user.getUsername(), res.getRoleAdmin());
         return false;
       } else {
+        notesService.deleteNoteForAuthor(id);
         user.setStatus(Status.DELETED);
         res.getUsersRep().save(user);
         log.info("IN UserService.deleteUser - user with id: {} successfully deleted", user.getUsername());
@@ -159,6 +162,7 @@ public class UserService {
     if (null != user) {
       user.setStatus(Status.ACTIVE);
       res.getUsersRep().save(user);
+      notesService.activateNoteForAuthor(id);
       log.info("IN UserService.activatedUser - user with id: {} successfully activate", user.getUsername());
       return true;
     }
