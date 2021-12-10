@@ -39,7 +39,7 @@ public class SharedResources {
   private String urlRedirectToTopicList = "redirect:/admin/topic/list";
   private String urlRedirectToNoteList = "redirect:/note/list";
   private String urlRedirectToRead = "redirect:/note/";
-  private String urlRedirectToNoteListDisable = "/admin/note/list/disable";
+  private String urlRedirectToNoteListDisable = "redirect:/admin/note/list/disable";
 
   private String msgErrorPasswordDoNotMatch = "Пароли не совпадают.";
   private String msgErrorPasswordShortLength = "Короткая длина пароля.";

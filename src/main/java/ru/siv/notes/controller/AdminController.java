@@ -151,8 +151,15 @@ public class AdminController {
     return "admins/note/note-read-disabled";
   }
 
-  // TODO: Просмотр удалённой статьи (если не удалён автор).
-  // TODO: Восстановление удалённой статьи (если не удалён автор).
+  @GetMapping("/admin/note/{id}/activated")
+  public String noteRestore(@PathVariable(value="id") Long id, Model model) {
+    if (!testUserRoleAdmin(model)) return res.getUrlRedirectToMain();
+    Notes note = notesService.getNoteForId(id, Status.DELETED, true);
+    if (null != note) {
+      notesService.activatedNote(id);
+    }
+    return res.getUrlRedirectToNoteListDisable();
+  }
 
   /**
    * Проверка текущего пользователя на роль администратора.
