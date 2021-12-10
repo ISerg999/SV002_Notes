@@ -39,26 +39,24 @@ public class RegistrationAndLoginController {
    */
   @PostMapping("/registration")
   public String addUser(@ModelAttribute("userForm") @Valid Users userForm, Model model) {
-    String msgError;
+    String msgError = "";
     UserService.InfoUser infoUser = userService.getCurrentUser();
     if (infoUser.getTypeRoleUser() >= 0) return res.getUrlRedirectToMain();
-    model.addAttribute(res.getUrlInfoUser(), infoUser);
-    model.addAttribute(res.getUrlUsrForm(), userForm);
-    // Аннотация Valid проверяет выполняются ли ограничения, установленные на поля, в данном случае длина не меньше 2 символов.
-    // Если ограничения не были выполнены, то bindingResult будет содержать ошибки.
     if (userForm.getPassword().length() < 2 || !userForm.getPassword().equals(userForm.getPasswordConfirm())) {
-      if (userForm.getPassword().length() < 2) msgError = res.getMsgErrorPasswordShortLength();
-      else msgError = res.getMsgErrorPasswordDoNotMatch();
-      model.addAttribute(res.getUrlError(), msgError);
-      return "registration";
+      if (userForm.getPassword().length() < 2) msgError = "msg.error.password.shortLength";
+      else msgError = "msg.error.password.doNotMatch";
+    } else {
+      if (userForm.getFullName().length() < 2) msgError = "msg.error.full.user.shortLength";
+      else {
+        if (userForm.getUsername().length() < 2 || !userService.addUser(userForm, Status.ACTIVE)) {
+          if (userForm.getUsername().length() < 2) msgError = "msg.error.user.shortLength";
+          else msgError = "msg.error.user";
+        }
+      }
     }
-    if (userForm.getFullName().length() < 2) {
-      model.addAttribute(res.getUrlError(), res.getMsgErrorFullUserShortLength());
-      return "registration";
-    }
-    if (userForm.getUsername().length() < 2 || !userService.addUser(userForm, Status.ACTIVE)) {
-      if (userForm.getUsername().length() < 2) msgError = res.getMsgErrorUserShortLength();
-      else msgError = res.getMsgErrorUser();
+    if (!msgError.isEmpty()) {
+      model.addAttribute(res.getUrlInfoUser(), infoUser);
+      model.addAttribute(res.getUrlUsrForm(), userForm);
       model.addAttribute(res.getUrlError(), msgError);
       return "registration";
     }

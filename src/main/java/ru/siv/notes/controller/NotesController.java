@@ -64,15 +64,14 @@ public class NotesController {
     UserService.InfoUser infoUser = userService.getCurrentUser();
     if (infoUser.getTypeRoleUser() > 0) {
       String msgError = "";
-      if (noteTitle.isEmpty()) msgError = res.getMsgErrorNoteTitleShortLength() + " ";
-      if (noteText.isEmpty()) msgError = msgError + res.getMsgErrorNoteTextShortLength();
-      if (msgError.isEmpty()) {
-        Long newId = notesService.addNote(infoUser.getUser().getId(), idTopic, noteTitle, noteText, Status.ACTIVE);
-        if (newId < 0L) {
-          msgError = res.getMsgErrorNoteMatching();
-        } else {
-          if (newId > 0L) {
-            return res.getUrlRedirectToRead() + newId;
+      if (noteTitle.isEmpty()) msgError = "msg.error.note.title.shortLength";
+      else {
+        if (noteText.isEmpty()) msgError = "msg.error.note.text.shortLength";
+        else {
+          Long newId = notesService.addNote(infoUser.getUser().getId(), idTopic, noteTitle, noteText, Status.ACTIVE);
+          if (newId < 0L) msgError = "msg.error.note.matching";
+          else {
+            if (newId > 0L) return res.getUrlRedirectToRead() + newId;
           }
         }
       }
@@ -113,13 +112,15 @@ public class NotesController {
     UserService.InfoUser infoUser = userService.getCurrentUser();
     if (infoUser.getTypeRoleUser() > 0) {
       String msgError = "";
-      if (noteTitle.isEmpty()) msgError = res.getMsgErrorNoteTitleShortLength() + " ";
-      if (noteText.isEmpty()) msgError = msgError + res.getMsgErrorNoteTextShortLength();
-      if (msgError.isEmpty()) {
-        Long newId = notesService.updateNote(id, idTopic, noteTitle, noteText);
-        if (newId > 0) return res.getUrlRedirectToRead() + id;
+      if (noteTitle.isEmpty()) msgError = "msg.error.note.title.shortLength";
+      else {
+        if (noteText.isEmpty()) msgError = "msg.error.note.text.shortLength";
         else {
-          if (newId < 0) msgError = res.getMsgErrorNoteMatching();;
+          Long newId = notesService.updateNote(id, idTopic, noteTitle, noteText);
+          if (newId > 0) return res.getUrlRedirectToRead() + id;
+          else {
+            if (newId < 0) msgError = "msg.error.note.matching";
+          }
         }
       }
       if (!msgError.isEmpty()) {

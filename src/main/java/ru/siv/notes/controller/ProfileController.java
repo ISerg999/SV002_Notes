@@ -36,19 +36,19 @@ public class ProfileController {
 
   @PostMapping("/profile")
   public String userPostUpdate(@ModelAttribute("userForm") @Valid Users userForm, Model model) {
-    String msgError;
+    String msgError = "";
     UserService.InfoUser infoUser = userService.getCurrentUser();
     if (infoUser.getTypeRoleUser() < 0) return res.getUrlRedirectToMain();
-    model.addAttribute(res.getUrlInfoUser(), infoUser);
-    model.addAttribute(res.getUrlUsrForm(), userForm);
     if (userForm.getPassword().length() < 2 || !userForm.getPassword().equals(userForm.getPasswordConfirm())) {
-      if (userForm.getPassword().length() < 2) msgError = res.getMsgErrorPasswordShortLength();
-      else msgError = res.getMsgErrorPasswordDoNotMatch();
-      model.addAttribute(res.getUrlError(), msgError);
-      return "profile";
+      if (userForm.getPassword().length() < 2) msgError = "msg.error.password.shortLength";
+      else msgError = "msg.error.password.doNotMatch";
+    } else {
+      if (userForm.getFullName().length() < 2) msgError = "msg.error.full.user.shortLength";
     }
-    if (userForm.getFullName().length() < 2) {
-      model.addAttribute(res.getUrlError(), res.getMsgErrorFullUserShortLength());
+    if (!msgError.isEmpty()) {
+      model.addAttribute(res.getUrlInfoUser(), infoUser);
+      model.addAttribute(res.getUrlUsrForm(), userForm);
+      model.addAttribute(res.getUrlError(), msgError);
       return "profile";
     }
     userService.updateUser(infoUser.getUser().getId(), userForm);

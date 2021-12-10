@@ -18,7 +18,6 @@ public class SharedResources {
   private String roleUser = "USER";
   private String roleAdmin = "ADMIN";
   private String anonymousUser = "anonymousUser";
-  private String fullNameGuest = "Гость";
   private String topicNull = "<Без темы>";
 
   private String urlInfoUser = "infoUser";
@@ -40,18 +39,6 @@ public class SharedResources {
   private String urlRedirectToNoteList = "redirect:/note/list";
   private String urlRedirectToRead = "redirect:/note/";
   private String urlRedirectToNoteListDisable = "redirect:/admin/note/list/disable";
-
-  private String msgErrorPasswordDoNotMatch = "Пароли не совпадают.";
-  private String msgErrorPasswordShortLength = "Короткая длина пароля.";
-  private String msgErrorUser = "Пользователь с таким именем уже существует.";
-  private String msgErrorUserShortLength = "Короткая длина имени пользователя.";
-  private String msgErrorFullUserShortLength = "Короткая длина полного имени пользователя.";
-  private String msgErrorTopicShortLength = "Короткая длина названия темы.";
-  private String msgErrorTopic = "Такая тема существует.";
-  private String msgErrorAdd = "Ошибка добавления.";
-  private String msgErrorNoteTitleShortLength = "Укажите название темы.";
-  private String msgErrorNoteTextShortLength = "Статья не должна быть пустой.";
-  private String msgErrorNoteMatching = "Данные совпадают с другой статьёй.";
 
   @Autowired
   private RolesRepository rolesRep;

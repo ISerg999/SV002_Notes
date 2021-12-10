@@ -10,7 +10,8 @@
 
 <div th:fragment="headline" class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
     <div class="d-flex align-items-left text-dark text-decoration-none">
-        <span class="fs-sm-1" th:text="#{users.username} + ': ' + ${infoUser.userName}"></span>
+        <span class="fs-sm-1" th:if="${infoUser.typeRoleUser<0}" th:text="#{users.username} + ': ' + #{msg.username.guest}"></span>
+        <span class="fs-sm-1" th:if="${infoUser.typeRoleUser>=0}" th:text="#{users.username} + ': ' + ${infoUser.userName}"></span>
     </div>
 
     <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto navbar navbar-expand-lg">

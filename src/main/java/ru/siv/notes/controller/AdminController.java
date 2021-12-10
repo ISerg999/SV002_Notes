@@ -85,9 +85,9 @@ public class AdminController {
   public String topicPostAdd(@RequestParam(name = "nameTopic") String nameTopic, Model model) {
     if (!testUserRoleAdmin(model)) return res.getUrlRedirectToMain();
     String msgError = "";
-    if (nameTopic.length() < 1) msgError = res.getMsgErrorTopicShortLength();
+    if (nameTopic.length() < 1) msgError = "msg.error.topic.shortLength";
     else {
-      if (!topicService.addTopic(nameTopic)) msgError = res.getMsgErrorTopic();
+      if (!topicService.addTopic(nameTopic)) msgError = "msg.error.topic";
     }
     if (!msgError.isEmpty()) {
       model.addAttribute(res.getUrlError(), msgError);
@@ -112,10 +112,10 @@ public class AdminController {
     String msgError = "";
     String oldName = topicService.getNameForId(id);
     if (nameTopic.length() < 1 || oldName.equals(nameTopic)) {
-      if (nameTopic.length() < 1) msgError = res.getMsgErrorTopicShortLength();
-      else msgError = res.getMsgErrorTopic();
+      if (nameTopic.length() < 1) msgError = "msg.error.topic.shortLength";
+      else msgError = "msg.error.topic";
     } else {
-      if (!topicService.updateTopic(id, nameTopic)) msgError = res.getMsgErrorAdd();
+      if (!topicService.updateTopic(id, nameTopic)) msgError = "msg.error.add";
     }
     if (!msgError.isEmpty()) {
       model.addAttribute(res.getUrlError(), msgError);

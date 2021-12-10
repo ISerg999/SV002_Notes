@@ -205,7 +205,7 @@ public class UserService {
 
     public InfoUser() {
       user = null;
-      userName = res.getFullNameGuest();
+      userName = "";
       typeRoleUser = -1;
     }
 
