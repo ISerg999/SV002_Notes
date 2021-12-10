@@ -70,28 +70,28 @@ public class AdminController {
   public String topicList(Model model) {
     if (!testUserRoleAdmin(model)) return res.getUrlRedirectToMain();
     model.addAttribute(res.getUrlAllTopic(), topicService.getAllTopic());
-    return "admins/topic-list";
+    return "admins/topic/topic-list";
   }
 
   @GetMapping("/admin/topic/add")
   public String topicAdd(Model model) {
     if (!testUserRoleAdmin(model)) return res.getUrlRedirectToMain();
     model.addAttribute(res.getUrlError(), "");
-    return "admins/topic-add";
+    return "admins/topic/topic-add";
   }
 
   @PostMapping("/admin/topic/add")
   public String topicPostAdd(@RequestParam(name = "nameTopic") String nameTopic, Model model) {
     if (!testUserRoleAdmin(model)) return res.getUrlRedirectToMain();
-    if (nameTopic.length() < 1) {
-      model.addAttribute(res.getUrlError(), res.getMsgErrorTopicShortLength());
-      return "admins/topic-add";
+    String msgError = "";
+    if (nameTopic.length() < 1) msgError = res.getMsgErrorTopicShortLength();
+    else {
+      if (!topicService.addTopic(nameTopic)) msgError = res.getMsgErrorTopic();
     }
-    if (!topicService.addTopic(nameTopic)) {
-      model.addAttribute(res.getUrlError(), res.getMsgErrorTopic());
-      return "admins/topic-add";
-    }
-    return res.getUrlRedirectToTopicList();
+    if (!msgError.isEmpty()) {
+      model.addAttribute(res.getUrlError(), msgError);
+      return "admins/topic/topic-add";
+    } else return res.getUrlRedirectToTopicList();
   }
 
   @GetMapping("/admin/topic/{id}/edit")
@@ -102,27 +102,26 @@ public class AdminController {
     model.addAttribute(res.getUrlTopicId(), id);
     model.addAttribute(res.getUrlTopicName(), nameTopic);
     model.addAttribute(res.getUrlError(), "");
-    return "admins/topic-edit";
+    return "admins/topic/topic-edit";
   }
 
   @PostMapping("/admin/topic/{id}/edit")
   public String topicPostUpdate(@PathVariable(value="id") Long id, @RequestParam(name = "nameTopic") String nameTopic, Model model) {
     if (!testUserRoleAdmin(model)) return res.getUrlRedirectToMain();
+    String msgError = "";
     String oldName = topicService.getNameForId(id);
     if (nameTopic.length() < 1 || oldName.equals(nameTopic)) {
-      if (nameTopic.length() < 1) model.addAttribute(res.getUrlError(), res.getMsgErrorTopicShortLength());
-      else model.addAttribute(res.getUrlError(), res.getMsgErrorTopic());
+      if (nameTopic.length() < 1) msgError = res.getMsgErrorTopicShortLength();
+      else msgError = res.getMsgErrorTopic();
+    } else {
+      if (!topicService.updateTopic(id, nameTopic)) msgError = res.getMsgErrorAdd();
+    }
+    if (!msgError.isEmpty()) {
+      model.addAttribute(res.getUrlError(), msgError);
       model.addAttribute(res.getUrlTopicId(), id);
       model.addAttribute(res.getUrlTopicName(), oldName);
-      return "admins/topic-edit";
-    }
-    if (!topicService.updateTopic(id, nameTopic)) {
-      model.addAttribute(res.getUrlError(), res.getMsgErrorAdd());
-      model.addAttribute(res.getUrlTopicId(), id);
-      model.addAttribute(res.getUrlTopicName(), oldName);
-      return "admins/topic-edit";
-    }
-    return res.getUrlRedirectToTopicList();
+      return "admins/topic/topic-edit";
+    } else return res.getUrlRedirectToTopicList();
   }
 
   @GetMapping("/admin/topic/{id}/remove")
@@ -135,7 +134,13 @@ public class AdminController {
 
   // Удалённые статьи, если автор не удалён. Просмотр списка статей, просмотр статьи, восстановление статьи.
 
-  // TODO: Список удалённых статей (если не удалён автор).
+  @GetMapping("/admin/note/list/disable")
+  public String noteListDeleted(Model model) {
+    if (!testUserRoleAdmin(model)) return res.getUrlRedirectToMain();
+    model.addAttribute(res.getUrlAllNote(), notesService.getAllNote(Status.DELETED, true));
+    return "admins/note/note-list-deleted";
+  }
+
   // TODO: Просмотр удалённой статьи (если не удалён автор).
   // TODO: Восстановление удалённой статьи (если не удалён автор).
 
